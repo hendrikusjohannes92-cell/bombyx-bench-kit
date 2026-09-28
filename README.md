@@ -1,7 +1,8 @@
 # Bombyx bench kit
 
 **The motor stops when your program stops.** A fail-safe stepper firmware for an Arduino Uno with a CNC Shield V3,
-and a digital twin that shows what the motor will do before it moves.
+and a digital twin that shows what the motor will do before it moves. It is the first piece of
+[Bombyx](#where-this-is-going-bombyx) you can put on your bench.
 
 <p align="center">
   <picture>
@@ -11,10 +12,11 @@ and a digital twin that shows what the motor will do before it moves.
 </p>
 
 If you let a PC, a script or an AI agent drive a stepper, you know the fear: the program hangs, the cable comes loose,
-and the motor keeps going. This kit makes that impossible on the Arduino Uno and CNC Shield V3 you already have, with a
-TMC2208 or A4988 driver and a NEMA 17. It is a ConfigurableFirmata sketch, a Python player, and a twin that runs the
-very same firmware image on simavr. It is the part of [Bombyx](#where-this-comes-from) that is useful on its own, and
-it needs nothing else from Bombyx.
+and the motor keeps going. This kit makes that impossible. It is a ConfigurableFirmata sketch, a Python player, and a
+twin that runs the very same firmware image on simavr, and it needs nothing else from Bombyx.
+
+**All you need**: an Arduino Uno, a CNC Shield V3, one stepper driver (TMC2208 or A4988), a NEMA 17, and a 12–24 V
+supply. If you have ever driven a stepper from an Arduino, it is already on your desk.
 
 - **The Uno only moves while it keeps hearing "yes".** The drivers stay energized only while a *permit* arrives at
   least every 500 ms. If your program hangs or crashes, or the cable is pulled, the permits stop, and the Uno
@@ -89,6 +91,22 @@ malformed message can no longer stall the chip while the motors are enabled. On 
 exactly the same steps: 1,600 for one turn, 19,200 for twelve, and a jitter that returns to 0. It is about 1.6 %
 slower on long moves: the twin predicts 27.3 s for the twelve turns. Its measurements on the metal come next, and this
 table will show them.
+
+It has been measured on one shield and one kind of driver. If you run it on an A4988 or a DRV8825, or on another
+motor, open an issue with what you measured and how, and the table gets a row.
+
+## Where this is going: Bombyx
+
+Bombyx is an operating system on the seL4 microkernel, built on one rule: an AI may ask for movement, but only a
+person, with a physical key on the machine, can allow it. A verified kernel keeps the AI away from the motors, and
+this firmware is the last link in that chain: it is what the Bombyx core talks to over USB.
+
+The kit is that link on its own. The stop you measure on your bench is the stop Bombyx relies on, and the twin that
+shows you a move first is what Bombyx runs on a plan before a person sees it, and what lets it refuse one. The
+kernel, the key and the rest of the system are the release.
+
+**Bombyx is not released yet.** Star or watch this repository: the release will be announced here first. Until then,
+this is the part you can hold, measure and take apart.
 
 ## What is in the kit
 
@@ -256,12 +274,6 @@ Exit codes: 0 done, 1 no MOVE COMPLETE, 2 refused, 3 stopped by you, 4 the Uno d
 - It is not the Bombyx safety gate. In Bombyx OS a move also needs a physical key press on the machine itself, and a
   verified kernel keeps the AI away from the motors. The kit's safety is the firmware's own stop.
 - Keep hands and loose things away from a moving shaft. The stop is fast, not instant.
-
-## Where this comes from
-
-Bombyx is an operating system on the seL4 microkernel where an AI may ask for movement but only a person, with a
-physical key, can allow it. This firmware is what the Bombyx core talks to over USB. The kit is the part that is
-useful on its own.
 
 ## Licence
 

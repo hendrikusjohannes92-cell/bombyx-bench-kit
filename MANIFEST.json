@@ -5,7 +5,7 @@
  "files": [
   {
    "path": "README.md",
-   "sha256": "9184f5f526013cbd2e3c175e50cd9f41bf86dcc39979f8a544a2a630a652fda3",
+   "sha256": "258c70dbd61d8c0fd215ff6180a54278b22f1616198e2c855d5badca13880b2a",
    "how": "copied, then revised in this repository (the front of the README, and the figures under docs/)",
    "from": "kit/bench/README.md",
    "from_sha256_lf": "66387af998a27ea574b4d3e4cc047a73d3cab5462f9bd14472ce14a85368c4c1"
