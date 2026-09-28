@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="372" viewBox="0 0 880 372" role="img" aria-labelledby="t">
+<title id="t">The twin runs the same bytes on the same firmware, so what the page shows is what your Uno gets.</title>
+<defs>
+<marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#ede4da"/></marker>
+<marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#cf8563"/></marker>
+</defs>
+<rect x="0.5" y="0.5" width="879" height="371" rx="10" fill="#1f1b16" stroke="#3a352c"/>
+
+<text x="24" y="36" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18" font-weight="600" font-style="normal" fill="#ede4da" text-anchor="start">The twin runs the same bytes on the same firmware.</text>
+<text x="24" y="58" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">So what you see on the page is what the player sends to your Uno, byte for byte.</text>
+<rect x="24" y="118" width="196" height="132" rx="8" fill="#0d1117" stroke="#3a352c" stroke-width="1.5"/>
+<text x="38" y="142" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#ede4da" text-anchor="start">your script</text>
+<text x="38" y="166" font-family="ui-monospace,'Cascadia Mono',Consolas,Menlo,monospace" font-size="12.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">turn 1</text>
+<text x="38" y="183" font-family="ui-monospace,'Cascadia Mono',Consolas,Menlo,monospace" font-size="12.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">rest 500</text>
+<text x="38" y="200" font-family="ui-monospace,'Cascadia Mono',Consolas,Menlo,monospace" font-size="12.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">turn 2 ccw at 1200</text>
+<text x="38" y="217" font-family="ui-monospace,'Cascadia Mono',Consolas,Menlo,monospace" font-size="12.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">move 400</text>
+<text x="38" y="234" font-family="ui-monospace,'Cascadia Mono',Consolas,Menlo,monospace" font-size="12.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">to 0</text>
+<line x1="220" y1="184.0" x2="262" y2="184.0" stroke="#ede4da" stroke-width="1.5" marker-end="url(#ak)"/>
+<rect x="264" y="138" width="172" height="92" rx="8" fill="#0d1117" stroke="#3a352c" stroke-width="1.5"/>
+<text x="278" y="162" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#ede4da" text-anchor="start">the same bytes</text>
+<text x="278" y="183" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">Firmata messages and</text>
+<text x="278" y="199" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">the permits, built once</text>
+<text x="278" y="215" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">by twin/firmata.py</text>
+<path d="M436 184.0 H462 V132.0 H490" fill="none" stroke="#cf8563" stroke-width="1.5" marker-end="url(#aa)"/>
+<path d="M436 184.0 H462 V272.0 H490" fill="none" stroke="#ede4da" stroke-width="1.5" marker-end="url(#ak)"/>
+<rect x="492" y="76" width="364" height="112" rx="8" fill="#0d1117" stroke="#cf8563" stroke-width="1.5"/>
+<text x="506" y="100" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#cf8563" text-anchor="start">the twin</text>
+<text x="574" y="100" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="italic" fill="#8a8274" text-anchor="start">no motor, no Uno needed</text>
+<text x="506" y="121" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">the real firmware image on a simulated ATmega328P</text>
+<text x="506" y="137" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">(simavr), cycle by cycle: every STEP edge, every reply</text>
+<text x="506" y="153" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">the page: a NEMA 17 turning as the chip steps it,</text>
+<text x="506" y="169" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">the speed over time, the Uno's replies, its refusals</text>
+<line x1="514" y1="188" x2="514" y2="214" stroke="#cf8563" stroke-width="1.5" marker-end="url(#aa)"/>
+<text x="526" y="206" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="600" font-style="normal" fill="#cf8563" text-anchor="start">one button runs exactly the run the twin showed</text>
+<rect x="492" y="216" width="364" height="112" rx="8" fill="#0d1117" stroke="#3a352c" stroke-width="1.5"/>
+<text x="506" y="240" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#ede4da" text-anchor="start">your Uno</text>
+<text x="506" y="261" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">the player sends them, with a permit every 100 ms</text>
+<text x="506" y="277" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#ede4da" text-anchor="start">the Uno counts every step, reports MOVE COMPLETE</text>
+<text x="506" y="293" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">any key, STOP or a quiet page stops it; under all of it,</text>
+<text x="506" y="309" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">the Uno's own 500 ms stop</text>
+<text x="24" y="348" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">Measured: the twin predicted 26.8 s for a 19,200-step move the metal made in 26.9 s (2026-09-28),</text>
+<text x="24" y="363" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#a39c8d" text-anchor="start">and 395 steps where the chip counted 392 (2026-09-21).</text>
+</svg>

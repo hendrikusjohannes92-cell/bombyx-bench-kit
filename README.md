@@ -1,11 +1,20 @@
 # Bombyx bench kit
 
-**A stepper firmware that stops the motor when your program stops, and a twin that shows what the motor will do
-before it moves.**
+**The motor stops when your program stops.** A fail-safe stepper firmware for an Arduino Uno with a CNC Shield V3,
+and a digital twin that shows what the motor will do before it moves.
 
-If you let a PC, a script or an AI drive a stepper, you know the fear: the program hangs, the cable comes loose, and
-the motor keeps going. This kit is the part of [Bombyx](#where-this-comes-from) that makes that impossible on an
-Arduino Uno with a CNC shield. It needs nothing else from Bombyx.
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/permit-stream-dark.svg">
+    <img src="docs/permit-stream.svg" width="880" alt="A timeline. Your program sends a permit every 100 ms, then hangs. 500 ms after the last permit the Uno drives ENABLE high by itself, the drivers are de-energized, and the motor stops.">
+  </picture>
+</p>
+
+If you let a PC, a script or an AI agent drive a stepper, you know the fear: the program hangs, the cable comes loose,
+and the motor keeps going. This kit makes that impossible on the Arduino Uno and CNC Shield V3 you already have, with a
+TMC2208 or A4988 driver and a NEMA 17. It is a ConfigurableFirmata sketch, a Python player, and a twin that runs the
+very same firmware image on simavr. It is the part of [Bombyx](#where-this-comes-from) that is useful on its own, and
+it needs nothing else from Bombyx.
 
 - **The Uno only moves while it keeps hearing "yes".** The drivers stay energized only while a *permit* arrives at
   least every 500 ms. If your program hangs or crashes, or the cable is pulled, the permits stop, and the Uno
@@ -16,6 +25,50 @@ Arduino Uno with a CNC shield. It needs nothing else from Bombyx.
 - **You see it first.** `bench_twin.py serve` opens a page where you write or drop a script. The real firmware runs
   it on a simulated Uno, and a NEMA 17 on the page turns exactly as the chip would step yours. With `--uno <port>`,
   one button then runs that same script on your motor.
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/twin-pipeline-dark.svg">
+    <img src="docs/twin-pipeline.svg" width="880" alt="Your script becomes one set of bytes, which goes two ways: to the twin, the real firmware image on a simulated ATmega328P whose steps turn a NEMA 17 on the page, and to your Uno through the player. One button runs exactly the run the twin just showed.">
+  </picture>
+</p>
+
+## Quick start
+
+```bash
+pip install -r requirements.txt                      # pyserial
+arduino-cli core install arduino:avr@1.8.7           # once
+arduino-cli lib install ConfigurableFirmata@3.3.0    # once
+arduino-cli compile --fqbn arduino:avr:uno firmware/bombyx_firmata
+arduino-cli upload  --fqbn arduino:avr:uno --port COM6 firmware/bombyx_firmata
+python bench_twin.py serve                           # the page: write a script, watch the twin, press the motor button
+```
+
+No Uno on the desk yet? The twin runs without one: `python bench_twin.py turn 12 --show` opens the page for one run.
+It needs simavr, gcc and the arduino-cli setup above, and no hardware at all. The details, and what to check on your
+shield before the first move, are under [Get started](#get-started).
+
+## Is this for you?
+
+- **Your Python drives a stepper**, from a laptop, a Raspberry Pi, a notebook, or an AI agent you are letting loose on
+  real hardware. You want the stop held by the board, not by the code that might be the thing that crashes.
+- **You have an Uno and a CNC shield on the bench** and want to try moves without wondering whether a typo energizes
+  the drivers and walks the motor off the desk.
+- **You want to see the move before the motor makes it**: how long twelve turns take, where the shaft ends, what the
+  ramps look like, and what the twin refuses.
+
+## How it compares
+
+| | ConfigurableFirmata as shipped | this kit |
+|---|---|---|
+| The host hangs, crashes, or the USB lead is pulled mid-move | the move runs to its end, and the drivers stay as the last message left them | the drivers are de-energized after 500 ms of silence, by the Uno itself, and a returning permit does not restart the move |
+| ENABLE (D8), which energizes every driver on the shield | a pin like any other: any pin write can drive it | not a pin: refused by name, and not offered in the capability list |
+| A malformed message | 3.3.0 trusts every index a host sends: one message naming a pin that does not exist can stop the core, and a stopped core changes no pin | a guard checks every message before the library sees it and refuses by name; the AVR's own watchdog restarts a stopped core, and ENABLE goes high before anything else |
+| What a move will do, before it runs | you find out on the metal | the same firmware image runs on a simulated Uno, and the page shows the shaft, the speed, and the Uno's replies |
+| Counted moves, reported complete | yes, AccelStepperFirmata | the same, unmodified |
+
+The library is used unmodified. Everything the kit adds is in `firmware/bombyx_firmata/`: three files, and the
+comments at the top of each say why it is there and what was measured.
 
 ## What was measured
 
@@ -37,7 +90,24 @@ exactly the same steps: 1,600 for one turn, 19,200 for twelve, and a jitter that
 slower on long moves: the twin predicts 27.3 s for the twelve turns. Its measurements on the metal come next, and this
 table will show them.
 
-## What you need
+## What is in the kit
+
+| | |
+|---|---|
+| `firmware/bombyx_firmata/` | the firmware: ConfigurableFirmata, plus the permit watchdog, the message guard, and D8 kept out of reach |
+| `firmware/en_probe/` | the probe the page puts on the Uno for half a minute to measure what holds your shield's EN line |
+| `bench_twin.py`, `twin/`, `twin_view_template.html` | the twin: the firmware image on simavr, the prediction, and the page |
+| `bench_player.py` | the command-line player: `turn`, `move`, `play`, `run`, and `--dry-run` for the exact bytes |
+| `shows/` | four timed shows (`sine`, `scale8`, `jitter`, `mario`) that the player and the twin both take |
+| `twin/wiring.json`, `twin/bench_facts.json` | your bench, as the twin reads it: which slot has a motor, and what was measured on your shield |
+| `docs/` | the two figures above, and `figures.py`, which draws them |
+
+## Get started
+
+The short version: flash the firmware (two `arduino-cli` commands), put the motor in slot Z, measure your shield once
+from the page, then write a script on the page, watch the twin, and press the motor button. In detail:
+
+### What you need
 
 - An Arduino Uno (or a compatible board with an ATmega328P at 16 MHz)
 - A CNC Shield V3, with **no cap on its EN/GND pins** (a cap there enables the drivers whatever the firmware does)
@@ -48,9 +118,9 @@ table will show them.
   **ConfigurableFirmata 3.3.0** library from the [Firmata project](https://github.com/firmata/ConfigurableFirmata)
   (the version this kit was tested with; it installs its own dependencies)
 - For the twin: simavr 1.6 with `libsimavr-dev`, `libelf-dev` and `gcc` (Linux or macOS; on Windows inside WSL's
-  Ubuntu-22.04), and the arduino-cli setup above
+  Ubuntu-22.04), and the arduino-cli setup above. The twin needs no motor, no shield and no Uno.
 
-## 1. Flash the firmware
+### 1. Flash the firmware
 
 ```bash
 arduino-cli core install arduino:avr@1.8.7
@@ -62,12 +132,12 @@ arduino-cli upload --fqbn arduino:avr:uno --port COM6 firmware/bombyx_firmata
 Use your own port (`/dev/ttyACM0`, `/dev/ttyUSB0`, `COM3`, ...). The board answers as **BombyxFirmata**, and the
 player refuses to drive a board that does not.
 
-## 2. Wire it
+### 2. Wire it
 
 Put the motor in slot **Z** (STEP D4, DIR D7) to begin with. X is D2/D5 and Y is D3/D6. D8 enables every slot, and it
 stays the firmware's. Set the driver's current before the first run. Power the shield before you start a move.
 
-## 3. Measure your shield once
+### 3. Measure your shield once
 
 The twin will not clear a plan whose safety depends on something nobody has measured. Two facts about your shield
 decide what the drivers do while the Uno restarts, which happens every time a program opens the port:
@@ -97,7 +167,7 @@ about 5 V means the drivers stay off during a restart. Write what you found into
 
 Also describe your motors in `twin/wiring.json` (`actuators`): one entry per slot with a motor.
 
-## 4. See it first: the twin page
+### 4. See it first: the twin page
 
 ```bash
 python bench_twin.py serve                   # the page, on http://127.0.0.1:8740: write or drop a script, see it
@@ -153,7 +223,7 @@ python bench_twin.py run my_script.txt       # as text
 python bench_twin.py turn 1                  # as text
 ```
 
-## 5. Run it
+### 5. Run it
 
 ```bash
 python bench_player.py --port COM6 turn 1
