@@ -47,8 +47,9 @@ python bench_twin.py serve                           # the page: write a script,
 ```
 
 No Uno on the desk yet? The twin runs without one: `python bench_twin.py turn 12 --show` opens the page for one run.
-It needs simavr, gcc and the arduino-cli setup above, and no hardware at all. The details, and what to check on your
-shield before the first move, are under [Get started](#get-started).
+It needs simavr, gcc and arduino-cli 1.5.1 (that exact version, see [What you need](#what-you-need)), and no
+hardware at all. The details, and what to check on your shield before the first move, are under
+[Get started](#get-started).
 
 ## Is this for you?
 
@@ -136,7 +137,9 @@ from the page, then write a script on the page, watch the twin, and press the mo
   **ConfigurableFirmata 3.3.0** library from the [Firmata project](https://github.com/firmata/ConfigurableFirmata)
   (the version this kit was tested with; it installs its own dependencies)
 - For the twin: simavr 1.6 with `libsimavr-dev`, `libelf-dev` and `gcc` (Linux or macOS; on Windows inside WSL's
-  Ubuntu-22.04), and the arduino-cli setup above. The twin needs no motor, no shield and no Uno.
+  Ubuntu-22.04), the core and the library above, and **arduino-cli 1.5.1, that exact version**: the twin rebuilds the
+  firmware image with the toolchain that built the measured one, and refuses another. The twin needs no motor, no
+  shield and no Uno.
 
 ### 1. Flash the firmware
 
