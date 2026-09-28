@@ -1,0 +1,92 @@
+{
+  "$comment": [
+    "YOUR bench, as the twin reads it. The shield, its pins and D8 (ENABLE, active low, all slots) are the CNC",
+    "Shield V3's and stay as they are. Edit `actuators`: one entry per slot that has a motor, with its",
+    "steps_per_rev (1600 = a TMC2208 or A4988 at 1/8 step) and the fastest rate you allow it. A slot with no",
+    "entry is empty: the twin reports steps sent to it. Set dir_invert to true when + turns the wrong way.",
+    "a_axis.jumpers: leave 'unconfirmed' unless you have set slot A's jumpers (clone_x|clone_y|clone_z|d12_d13)."
+  ],
+  "version": 1,
+  "deployment": "kit",
+  "board": {
+    "id": "uno",
+    "fqbn": "arduino:avr:uno",
+    "transport": {
+      "kind": "usb-serial",
+      "baud": 57600,
+      "framing": "8N1",
+      "protocol": "firmata",
+      "firmware": "firmware/bombyx_firmata/bombyx_firmata.ino"
+    }
+  },
+  "shields": [
+    {
+      "id": "cnc_v3",
+      "type": "CNC Shield V3",
+      "microstepping": "1/8",
+      "steps_per_rev": 1600,
+      "slot_ids": {
+        "X": 1,
+        "Y": 2,
+        "Z": 3,
+        "A": 4
+      },
+      "a_axis": {
+        "jumpers": "unconfirmed"
+      }
+    }
+  ],
+  "pins": {
+    "D2": {
+      "role": "step",
+      "slot": "X"
+    },
+    "D5": {
+      "role": "dir",
+      "slot": "X"
+    },
+    "D3": {
+      "role": "step",
+      "slot": "Y"
+    },
+    "D6": {
+      "role": "dir",
+      "slot": "Y"
+    },
+    "D4": {
+      "role": "step",
+      "slot": "Z"
+    },
+    "D7": {
+      "role": "dir",
+      "slot": "Z"
+    },
+    "D12": {
+      "role": "step",
+      "slot": "A"
+    },
+    "D13": {
+      "role": "dir",
+      "slot": "A"
+    },
+    "D8": {
+      "role": "enable",
+      "active_low": true,
+      "scope": "all_slots",
+      "policy": "core_only"
+    }
+  },
+  "actuators": [
+    {
+      "id": "motor_z",
+      "slot": "Z",
+      "type": "stepper",
+      "part": "NEMA17",
+      "steps_per_rev": 1600,
+      "max_rate_sps": 4000,
+      "dir_invert": false
+    }
+  ],
+  "links": [],
+  "sensors": []
+}

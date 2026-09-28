@@ -1,0 +1,131 @@
+{
+ "schema": "bombyx.bench_twin.bench_facts/1",
+ "$comment": [
+  "The PHYSICAL facts of YOUR bench that the twin needs and wiring.json does not hold. Each carries its",
+  "provenance: MEASURED (on your bench, with the date), DERIVED (a datasheet: never evidence about your bench),",
+  "UNKNOWN (value null). A prediction that depends on an UNKNOWN says so, and the twin refuses a plan whose",
+  "safety depends on one. README.md, 'Measure your shield once', says how to fill in the two that clear it."
+ ],
+ "shield": {
+  "en_gnd_jumper_fitted": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "a cap on the shield's EN/GND header ties ENABLE low for every slot whatever the firmware drives on D8"
+  },
+  "en_pull": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "decides whether the drivers are energized while D8 is an input: through reset, the bootloader and the first ~0.4 ms of setup()"
+  },
+  "slot_a_jumpers": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "headers_attached": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  }
+ },
+ "driver_slot_z": {
+  "part": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "counts_rising_step_edges_only": {
+   "value": true,
+   "provenance": "DERIVED"
+  },
+  "min_step_high_ns": {
+   "value": 15000,
+   "provenance": "REFERENCE",
+   "why": "the shortest STEP pulse seen to move the reference bench's motor (a TMC2208 at 1/8 step); AccelStepper's own pulses are 15-17 us. Shorter pulses are treated as unknown."
+  },
+  "dir_setup_ns": {
+   "value": 20,
+   "provenance": "DERIVED"
+  },
+  "counts_steps_while_disabled": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "whether MSCNT advances on STEP edges while ENN is high decides the rotor snap on re-energize"
+  },
+  "vref_v": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "sets the coil current, and with it torque, heat and the no-slip envelope"
+  },
+  "chopper_mode": {
+   "value": "stealthChop",
+   "provenance": "DERIVED"
+  },
+  "pdn_uart_jumper": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  }
+ },
+ "motor_z": {
+  "part_number": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "full_steps_per_rev": {
+   "value": 200,
+   "provenance": "DERIVED"
+  },
+  "rated_current_a": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "phase_resistance_ohm": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "phase_inductance_mh": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "holding_torque_ncm": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "rotor_inertia_gcm2": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "dir_high_rotation": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "shaft_load": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "no_slip_envelope": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "the largest rate and acceleration at which commanded steps are realised; never measured, and never to be found by stalling"
+  }
+ },
+ "power": {
+  "vm_supply_v": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  },
+  "uno_power_source": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "USB only means a USB pull is a brown-out, not a watchdog lapse"
+  }
+ },
+ "clock": {
+  "source": {
+   "value": null,
+   "provenance": "UNKNOWN",
+   "why": "crystal or ceramic resonator: the chip twin runs at exactly 16 MHz; a resonator can be 0.5 % off"
+  },
+  "error_ppm": {
+   "value": null,
+   "provenance": "UNKNOWN"
+  }
+ }
+}
