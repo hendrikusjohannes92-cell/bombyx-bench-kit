@@ -13,8 +13,9 @@ Arduino Uno with a CNC shield. It needs nothing else from Bombyx.
 - **Any key stops it at once.** The player sends "stop" before anything else, and the Uno de-energizes.
 - **The enable line belongs to the firmware.** D8, which enables every driver on the shield, cannot be driven by
   any message. A program can ask for moves, and only the firmware can energize the motors.
-- **You see it first.** `bench_twin.py` runs the real firmware on a simulated Uno, feeds it the exact bytes the
-  player would send, and tells you how many steps each motor gets, how fast, and for how long.
+- **You see it first.** `bench_twin.py serve` opens a page where you write or drop a script. The real firmware runs
+  it on a simulated Uno, and a NEMA 17 on the page turns exactly as the chip would step yours. With `--uno <port>`,
+  one button then runs that same script on your motor.
 
 ## What was measured
 
@@ -71,11 +72,23 @@ stays the firmware's. Set the driver's current before the first run. Power the s
 The twin will not clear a plan whose safety depends on something nobody has measured. Two facts about your shield
 decide what the drivers do while the Uno restarts, which happens every time a program opens the port:
 
-1. **Is there a cap on the EN/GND pins?** Look. There must not be.
-2. **What holds EN while the Uno restarts?** Hold the Uno's reset button and measure EN to GND. About 5 V means the
-   drivers stay off during a restart.
+1. **Is there a cap on the EN/GND pins?** There must not be.
+2. **What holds EN while nothing drives it?** It must be held high, so the drivers stay off during a restart.
 
-Write what you found into `twin/bench_facts.json` under `shield`, for example:
+**The page measures it for you.** Start the page (step 4), check that it shows your Uno's port, and press **Measure my
+shield**. For about half a minute the Uno runs a small probe (`firmware/en_probe`) that reads its own EN line. Two
+control pins must read as expected, or the answer is not believed: D0, held high by the USB chip, and A5, with nothing
+on it. STEP and DIR are held low throughout, so nothing can move. Then the page puts back the firmware it twins,
+checks that the Uno says it runs BombyxFirmata, and writes what was measured into `twin/bench_facts.json`.
+
+- **EN held high**: the drivers stay off while the Uno restarts. It also shows there is no cap on EN/GND.
+- **EN held low**: a cap on EN/GND, or a pull-down. Take the cap off if there is one; if not, fit a 10 kOhm resistor
+  from EN to 5 V. Then measure again.
+- **Nothing holds EN**: fit a 10 kOhm resistor from EN to 5 V, then measure again.
+
+**With a meter instead.** Look at the EN/GND pins: no cap. Then hold the Uno's reset button and measure EN to GND:
+about 5 V means the drivers stay off during a restart. Write what you found into `twin/bench_facts.json` under
+`shield`, for example:
 
 ```json
 "en_gnd_jumper_fitted": {"value": false, "provenance": "MEASURED", "source": "looked, 2026-10-01"},
@@ -84,16 +97,61 @@ Write what you found into `twin/bench_facts.json` under `shield`, for example:
 
 Also describe your motors in `twin/wiring.json` (`actuators`): one entry per slot with a motor.
 
-## 4. See it first
+## 4. See it first: the twin page
 
 ```bash
-python bench_twin.py turn 1
-python bench_twin.py turn 12 --reverse
-python bench_twin.py play shows/show_jitter.txt
+python bench_twin.py serve                   # the page, on http://127.0.0.1:8740: write or drop a script, see it
+python bench_twin.py serve --uno COM6        # name your Uno's port yourself (otherwise the page finds it)
+python bench_twin.py serve --sketch DIR      # your Uno runs another build of the firmware: the twin runs that one
 ```
 
-It prints the steps each slot would get, the speed, and the time, what the Uno would say, and anything it refuses.
-It uses the same arguments as the player and the same bytes.
+**Your Uno.** The page lists the serial ports on this computer, without opening any, and takes the Uno when there is
+exactly one; choose another from the list. *Ask what it runs* opens that port and asks the board for its firmware's
+name, and nothing else. *Measure my shield* is step 3.
+
+The page shows:
+- **a NEMA 17 seen from the front**, with a pointer on its shaft. It turns exactly as the simulated chip steps it,
+  at real speed, slowed down or sped up;
+- the speed over time, with the ramp up, the cruise and the ramp down;
+- the Uno's own replies (MOVE COMPLETE, de-energized) at the moment it would send them;
+- anything the twin refuses, and why.
+
+**Your own scripts.** Type one on the page, or drop a `.txt` file on it, then press *Show it on the twin*. One step
+per line, or several separated by `;`:
+
+```text
+turn 1                        # one turn clockwise (ccw for the other way)
+rest 500                      # hold still for 500 ms
+turn 2 ccw at 1200 accel 4000 # faster: 1200 steps/s, ramping at 4000 steps/s^2 (accel 0 = constant speed)
+move 400                      # 400 steps from where the shaft is
+to 0                          # back to where the script began
+```
+
+`at` and `accel` stay in force for the steps after them. A show file (`shows/*.txt`) can be dropped on the page too.
+
+**On your motor.** Once the page has your Uno's port, it has a button that runs **exactly the run the twin just
+showed**:
+- change the script, the slot or the direction, and the button waits until you show it on the twin again;
+- the *reverse direction* box starts from `dir_invert` in `twin/wiring.json` for the slot. If a run turns the wrong
+  way, press *Record that it turns the other way* under the button: it is written there, and the next run turns
+  the right way. (`bench_player.py` on the command line does not read it: give it `--reverse` yourself);
+- the button stays off while the twin refuses anything, so a new kit moves no motor until you have measured your
+  shield (step 3);
+- it asks once, *"This will move your motor: …, about … s"*, and then starts;
+- while it runs, the big STOP button or any key on the page stops it. Closing the page stops it too: the page says
+  "still here" five times a second, and the motor stops within 0.6 s of silence. The Uno's own 500 ms stop is under
+  all of it.
+
+The page listens on 127.0.0.1 only, and answers only its own page: another website open in your browser cannot
+start your motor.
+
+The same, without a server:
+
+```bash
+python bench_twin.py turn 12 --show          # writes twin_view.html and opens it: one run, no upload, no motor button
+python bench_twin.py run my_script.txt       # as text
+python bench_twin.py turn 1                  # as text
+```
 
 ## 5. Run it
 
@@ -102,6 +160,7 @@ python bench_player.py --port COM6 turn 1
 python bench_player.py --port COM6 turn 12 --reverse
 python bench_player.py --port COM6 move -800 --speed 400 --accel 800
 python bench_player.py --port COM6 play shows/show_sine.txt
+python bench_player.py --port COM6 run my_script.txt
 python bench_player.py --dry-run turn 1          # the exact bytes and times; opens no port
 ```
 

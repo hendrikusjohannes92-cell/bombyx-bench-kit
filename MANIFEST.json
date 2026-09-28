@@ -1,21 +1,21 @@
 {
  "schema": "bombyx.bench_kit.manifest/1",
- "bombyx_commit": "2f966e3d2337",
+ "bombyx_commit": "0ec8e555cd9a",
  "dirty": false,
  "files": [
   {
    "path": "README.md",
-   "sha256": "0df2890ed599e5e72f5816d6846b803cb930b87130bc17c69b94eb9fd73d4e09",
+   "sha256": "66387af998a27ea574b4d3e4cc047a73d3cab5462f9bd14472ce14a85368c4c1",
    "how": "copied",
    "from": "kit/bench/README.md",
-   "from_sha256_lf": "0df2890ed599e5e72f5816d6846b803cb930b87130bc17c69b94eb9fd73d4e09"
+   "from_sha256_lf": "66387af998a27ea574b4d3e4cc047a73d3cab5462f9bd14472ce14a85368c4c1"
   },
   {
    "path": "NOTICE.md",
-   "sha256": "e0f55787e3d5076c3ff12764287229c56d93ff5a42001b9c2e36260c5951bc79",
+   "sha256": "fac41e897012dc8aeb57e795b893916328179b4da69dbcff6009268d3712bb80",
    "how": "copied",
    "from": "kit/bench/NOTICE.md",
-   "from_sha256_lf": "e0f55787e3d5076c3ff12764287229c56d93ff5a42001b9c2e36260c5951bc79"
+   "from_sha256_lf": "fac41e897012dc8aeb57e795b893916328179b4da69dbcff6009268d3712bb80"
   },
   {
    "path": "LICENSE",
@@ -47,24 +47,31 @@
   },
   {
    "path": ".gitignore",
-   "sha256": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793",
+   "sha256": "6d7b2902eed45e1126300fd0ba6661ea8bcca98a4a6dc2371d959d7aeb089e78",
    "how": "copied",
    "from": "kit/bench/.gitignore",
-   "from_sha256_lf": "862263fa1f46c20f0d1e4dac5ffcc75abd55c08211b2c3864c5f8764b9d87793"
+   "from_sha256_lf": "6d7b2902eed45e1126300fd0ba6661ea8bcca98a4a6dc2371d959d7aeb089e78"
   },
   {
    "path": "bench_player.py",
-   "sha256": "c38e4416b1fd7d70c722c95945b49f3756a8400f378bbac853c0fc439e2018cd",
+   "sha256": "3532738f7dbe9f397aeefffeca439eb5c70916a242585ee96036ae36474cb816",
    "how": "copied",
    "from": "kit/bench/bench_player.py",
-   "from_sha256_lf": "c38e4416b1fd7d70c722c95945b49f3756a8400f378bbac853c0fc439e2018cd"
+   "from_sha256_lf": "3532738f7dbe9f397aeefffeca439eb5c70916a242585ee96036ae36474cb816"
   },
   {
    "path": "bench_twin.py",
-   "sha256": "4af12a9ce76d8d84f40edcdf147e0bb4561482c2dfe42965d6124bf1c0693d7e",
+   "sha256": "e75fdb1f2076d82ca6bbab84ae65fb3fd45cf6ca1efd08cf65e8036a3e06654d",
    "how": "copied",
    "from": "kit/bench/bench_twin.py",
-   "from_sha256_lf": "4af12a9ce76d8d84f40edcdf147e0bb4561482c2dfe42965d6124bf1c0693d7e"
+   "from_sha256_lf": "e75fdb1f2076d82ca6bbab84ae65fb3fd45cf6ca1efd08cf65e8036a3e06654d"
+  },
+  {
+   "path": "twin_view_template.html",
+   "sha256": "1e880b0ecd559854794d79ce5bacee09358b8c93c877da2e9ec6b3f3008633e6",
+   "how": "copied",
+   "from": "kit/bench/twin_view_template.html",
+   "from_sha256_lf": "1e880b0ecd559854794d79ce5bacee09358b8c93c877da2e9ec6b3f3008633e6"
   },
   {
    "path": "firmware/bombyx_firmata/bombyx_firmata.ino",
@@ -86,6 +93,13 @@
    "how": "copied, 3 internal name(s) removed (export.SCRUB)",
    "from": "os/sel4/arduino/bombyx_firmata/bombyx_guard.h",
    "from_sha256_lf": "42d9c442c4a88a79a86c2f8a04c31848adbb1c69cff8277edc41683430beb831"
+  },
+  {
+   "path": "firmware/en_probe/en_probe.ino",
+   "sha256": "1d84c2fff0953a8c7138fb75a87b4e8e9e3be88dd8736636f104671ff8779261",
+   "how": "copied",
+   "from": "kit/bench/firmware/en_probe/en_probe.ino",
+   "from_sha256_lf": "1d84c2fff0953a8c7138fb75a87b4e8e9e3be88dd8736636f104671ff8779261"
   },
   {
    "path": "twin/firmata.py",

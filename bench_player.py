@@ -6,6 +6,7 @@ WHAT IT DOES
   turn N        N full turns, as ONE counted move: the Uno counts every step and says MOVE COMPLETE
   move N        N steps (negative = the other way), the same way
   play FILE     a timed show (shows/show_*.txt): every message at its time, the same bytes the twin ran
+  run FILE      a script (turn / move / to / rest, see compile_script): compiled to timed targets, then played
 
 WHY IT IS SAFE TO LEAVE A MOTOR TO A PROGRAM
   * The Uno keeps its drivers energized only while a PERMIT keeps arriving. This player sends one every 100 ms while
@@ -118,27 +119,123 @@ def turn(turns, steps_per_rev=1600, **kw):
 
 
 def read_show(path):
+    with open(path, encoding="ascii") as fh:
+        return read_show_text(fh.read(), os.path.basename(path))
+
+
+def read_show_text(text, name="show"):
     """A show file: '# comment', 'end <ms>', then '<t_ms> <hex>' lines -- one Firmata message each. The permit is not
     in the file: the player keeps it alive from the start to the end."""
     end, sched = None, []
-    with open(path, encoding="ascii") as fh:
-        for n, line in enumerate(fh, 1):
-            line = line.strip()
-            if not line or line.startswith("#"):
-                continue
-            a, b = line.split(None, 1)
+    for n, line in enumerate(text.splitlines(), 1):
+        line = line.strip()
+        if not line or line.startswith("#"):
+            continue
+        parts = line.split(None, 1)
+        if len(parts) != 2:
+            raise ValueError("%s:%d is not '<t_ms> <hex>' or 'end <ms>'" % (name, n))
+        a, b = parts
+        try:
             if a == "end":
                 end = float(b)
                 continue
             data = bytes.fromhex(b)
-            if not data or data[0] != fm.START_SYSEX or data[-1] != fm.END_SYSEX:
-                raise ValueError("%s:%d is not one Firmata sysex message" % (path, n))
-            if len(data) >= 3 and data[1] == fm.BOMBYX_PERMIT:
-                raise ValueError("%s:%d carries a permit; the player owns the permit" % (path, n))
-            sched.append((float(a), data))
+            t = float(a)
+        except ValueError:
+            raise ValueError("%s:%d is not '<t_ms> <hex>' or 'end <ms>'" % (name, n))
+        if not data or data[0] != fm.START_SYSEX or data[-1] != fm.END_SYSEX:
+            raise ValueError("%s:%d is not one Firmata sysex message" % (name, n))
+        if len(data) >= 3 and data[1] == fm.BOMBYX_PERMIT:
+            raise ValueError("%s:%d carries a permit; the player owns the permit" % (name, n))
+        sched.append((t, data))
     if end is None:
-        raise ValueError("%s has no 'end <ms>' line" % path)
-    return Job(sched, end, False, "show %s" % os.path.basename(path))
+        raise ValueError("%s has no 'end <ms>' line" % name)
+    return Job(sched, end, False, "show %s" % name)
+
+
+def looks_like_a_show(text):
+    """A show file has an 'end <ms>' line; a script never does."""
+    return any(l.split(None, 1)[:1] == ["end"] for l in text.splitlines() if l.strip() and not l.strip().startswith("#"))
+
+
+# ---- scripts --------------------------------------------------------------------------------------------------------
+#: The kit reads the step words of Bombyx's movement scripts, the subset whose motion is one move to a target:
+#:   turn <n> [cw|ccw] [at <steps/s>] [accel <steps/s^2>]    n turns from where the shaft is (cw is +)
+#:   move <steps> [at ...] [accel ...]                        steps from where the shaft is
+#:   to <steps> [at ...] [accel ...]                          to a position, counted from where the script began
+#:   rest <ms>                                                hold still
+#: One step per line, or several on a line separated by ';'. '#' starts a comment. 'at' and 'accel' stay in force for
+#: the steps after them; accel 0 means constant speed. Each move is timed by the AccelStepper trapezoid (move_time_ms)
+#: plus a margin, and every move is an ABSOLUTE target, so a late message never makes the shaft drift.
+SCRIPT_MARGIN = 1.05
+SCRIPT_GAP_MS = 50.0
+MAX_SCRIPT_STEPS = 500
+MAX_SCRIPT_MS = 10 * 60 * 1000.0
+
+
+def compile_script(text, name="script", slot="z", reverse=False, steps_per_rev=1600, speed=739.0, accel=1500.0):
+    step_pin, dir_pin = SLOTS[slot]
+    sched = [(0.0, fm.stepper_config_driver(DEVICE, step_pin, dir_pin, invert=1 if reverse else 0))]
+    t, pos, sent_speed, sent_accel, n_steps = FIRST_MOVE_MS, 0, None, None, 0
+    words = [(n, w.strip()) for n, line in enumerate(text.splitlines(), 1)
+             for w in line.split("#", 1)[0].split(";") if w.strip()]
+    if not words:
+        raise ValueError("%s has no steps" % name)
+    if len(words) > MAX_SCRIPT_STEPS:
+        raise ValueError("%s has %d steps; the kit plays at most %d" % (name, len(words), MAX_SCRIPT_STEPS))
+    for n, w in words:
+        tok = w.lower().split()
+        where = "%s:%d '%s'" % (name, n, w)
+        try:
+            if tok[0] == "rest":
+                if len(tok) != 2 or float(tok[1]) < 0:
+                    raise ValueError
+                t += float(tok[1])
+                continue
+            if tok[0] not in ("turn", "move", "to") or len(tok) < 2:
+                raise ValueError
+            amount, rest = float(tok[1]), tok[2:]
+            sign = 1
+            while rest:
+                if rest[0] in ("cw", "ccw") and tok[0] == "turn":
+                    sign = -1 if rest[0] == "ccw" else 1
+                    rest = rest[1:]
+                elif rest[0] == "at" and len(rest) >= 2:
+                    speed, rest = float(rest[1]), rest[2:]
+                elif rest[0] == "accel" and len(rest) >= 2:
+                    accel, rest = float(rest[1]), rest[2:]
+                else:
+                    raise ValueError
+        except (ValueError, IndexError):
+            raise ValueError("%s: not a step the kit knows (turn, move, to, rest; with at and accel)" % where)
+        if tok[0] == "turn":
+            target = pos + int(round(sign * amount * steps_per_rev))
+        elif tok[0] == "move":
+            target = pos + int(round(amount))
+        else:
+            target = int(round(amount))
+        delta = target - pos
+        try:
+            check_motion(delta if delta else 1, speed, accel)
+            if abs(target) > MAX_STEPS:
+                raise ValueError("the position %d is more than %d steps from the start" % (target, MAX_STEPS))
+        except ValueError as e:
+            raise ValueError("%s: %s" % (where, e))
+        if speed != sent_speed:
+            sched.append((t, fm.stepper_set_speed(DEVICE, float(speed))))
+            sent_speed = speed
+        if accel != sent_accel:
+            sched.append((t, fm.stepper_set_acceleration(DEVICE, float(accel))))
+            sent_accel = accel
+        if delta:
+            sched.append((t, fm.stepper_to(DEVICE, target)))
+            t += move_time_ms(delta, speed, accel) * SCRIPT_MARGIN + SCRIPT_GAP_MS
+            n_steps += abs(delta)
+        pos = target
+    end = t + 300.0
+    if end > MAX_SCRIPT_MS:
+        raise ValueError("%s runs %.0f s; the kit plays at most %.0f s" % (name, end / 1000.0, MAX_SCRIPT_MS / 1000.0))
+    return Job(sched, end, False, "%s: %d steps on slot %s, ending at %+d" % (name, n_steps, slot.upper(), pos))
 
 
 def with_permits(job, start_ms=0.0, until_ms=None):
@@ -318,13 +415,17 @@ def build_job(a):
                     speed=a.speed, accel=a.accel)
     if a.what == "move":
         return counted_move(int(a.value), slot=a.slot, reverse=a.reverse, speed=a.speed, accel=a.accel)
+    if a.what == "run":
+        with open(a.value, encoding="utf-8") as fh:
+            return compile_script(fh.read(), os.path.basename(a.value), slot=a.slot, reverse=a.reverse,
+                                  steps_per_rev=a.steps_per_rev, speed=a.speed, accel=a.accel)
     return read_show(a.value)
 
 
 def arg_parser():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
-    ap.add_argument("what", choices=("turn", "move", "play"))
-    ap.add_argument("value", help="turns, steps, or a show file")
+    ap.add_argument("what", choices=("turn", "move", "play", "run"))
+    ap.add_argument("value", help="turns, steps, a show file (play) or a script file (run)")
     ap.add_argument("--port", help="the Uno's serial port (COM6, /dev/ttyACM0, ...)")
     ap.add_argument("--slot", choices=sorted(SLOTS), default="z", help="the CNC shield slot (default z)")
     ap.add_argument("--reverse", action="store_true", help="invert DIR: + turns the other way")

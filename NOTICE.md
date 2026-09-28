@@ -5,6 +5,7 @@
 | files | licence | text |
 |---|---|---|
 | `firmware/bombyx_firmata/` (the sketch and its two headers) | BSD-2-Clause | `LICENSES/BSD-2-Clause.txt` |
+| `firmware/en_probe/` (the shield probe the page puts on the Uno for a moment) | BSD-2-Clause | `LICENSES/BSD-2-Clause.txt` |
 | `twin/chip_twin.c` | GPL-3.0-only: it is compiled against libsimavr, which is GPL-3.0 | `LICENSES/GPL-3.0.txt` |
 | everything else | Apache License 2.0 | `LICENSE` |
 
@@ -36,6 +37,9 @@ index. The current release is 3.4.0; it has not been tested here.
 
 Not in the image, though installed alongside: ConfigurableFirmata's MultiStepper, OneWire, scheduler, Encoder7Bit and
 DHT support; the DHT sensor library and Adafruit Unified Sensor, which arduino-cli installs as dependencies.
+
+The shield probe's image (`firmware/en_probe`) holds only its own sketch (BSD-2-Clause) and the Arduino AVR core
+(LGPL 2.1): no Firmata and no AccelStepper.
 
 **If you share a compiled firmware image** (a `.hex` built from this sketch), you share all of the above, and their
 licences apply to it. Because AccelStepper is GPL-2.0, the image as a whole must be shared on GPL-2.0 terms:
