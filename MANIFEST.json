@@ -5,8 +5,8 @@
  "files": [
   {
    "path": "README.md",
-   "sha256": "66387af998a27ea574b4d3e4cc047a73d3cab5462f9bd14472ce14a85368c4c1",
-   "how": "copied",
+   "sha256": "0233c4ad16c79f852fd56964f7cd50e8fe50cfeebe8b123c43045f074adc8ec7",
+   "how": "copied, then revised in this repository (the front of the README, and the figures under docs/)",
    "from": "kit/bench/README.md",
    "from_sha256_lf": "66387af998a27ea574b4d3e4cc047a73d3cab5462f9bd14472ce14a85368c4c1"
   },
@@ -177,6 +177,41 @@
    "how": "generated: measured facts reset to UNKNOWN (export.kit_facts)",
    "from": "tools/bench_twin/bench_facts.json",
    "from_sha256_lf": "4ec75c7830d3fe2fc7dc4fd3c9bdba6484bd15c51e0dd93a75c33e84022dc8ff"
+  },
+  {
+   "path": "docs/figures.py",
+   "sha256": "ec6e1ebef571ec182c9c3074bca04a3db40d1be2516203112d6d9ddbea616223",
+   "how": "written in this repository",
+   "from": null,
+   "from_sha256_lf": null
+  },
+  {
+   "path": "docs/permit-stream.svg",
+   "sha256": "ed5694853d3b23981882c19f05384618c31c8d2ab47de7a195f5fda7f4c37608",
+   "how": "written in this repository",
+   "from": null,
+   "from_sha256_lf": null
+  },
+  {
+   "path": "docs/permit-stream-dark.svg",
+   "sha256": "8a93f676fbe2b78ec48fcadbf36425938f6ea0eecb9c8fb28f1388eb3ef37043",
+   "how": "written in this repository",
+   "from": null,
+   "from_sha256_lf": null
+  },
+  {
+   "path": "docs/twin-pipeline.svg",
+   "sha256": "653aad37b4c673414dda6963fbf6539b8473c3f69905284d4e20ec5fc069ec3a",
+   "how": "written in this repository",
+   "from": null,
+   "from_sha256_lf": null
+  },
+  {
+   "path": "docs/twin-pipeline-dark.svg",
+   "sha256": "6797f345fffb1f366f2c82e9aea31c91abd66849f2e8b42aab534fd0115e5cc7",
+   "how": "written in this repository",
+   "from": null,
+   "from_sha256_lf": null
   }
  ]
 }

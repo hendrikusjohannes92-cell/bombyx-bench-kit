@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="360" viewBox="0 0 880 360" role="img" aria-labelledby="t">
+<title id="t">The permit is a stream, not an event: 500 ms of silence de-energizes the drivers.</title>
+<defs>
+<marker id="ak" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#1f1b16"/></marker>
+<marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 z" fill="#a4532f"/></marker>
+</defs>
+<rect x="0.5" y="0.5" width="879" height="359" rx="10" fill="#f6f7f2" stroke="#c9cdbf"/>
+
+<text x="24" y="36" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="18" font-weight="600" font-style="normal" fill="#1f1b16" text-anchor="start">The permit is a stream, not an event.</text>
+<text x="24" y="58" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="normal" font-style="normal" fill="#5b574d" text-anchor="start">The Uno keeps the drivers energized only while a permit keeps arriving. Nothing else counts as one.</text>
+<line x1="180.0" y1="290" x2="850.0" y2="290" stroke="#c9cdbf" stroke-width="1"/>
+<line x1="180.0" y1="290" x2="180.0" y2="295" stroke="#c9cdbf" stroke-width="1"/>
+<text x="180.0" y="309" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#7d786c" text-anchor="middle">0 s</text>
+<line x1="319.58333333333337" y1="290" x2="319.58333333333337" y2="295" stroke="#c9cdbf" stroke-width="1"/>
+<text x="319.58333333333337" y="309" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#7d786c" text-anchor="middle">0.5 s</text>
+<line x1="459.1666666666667" y1="290" x2="459.1666666666667" y2="295" stroke="#c9cdbf" stroke-width="1"/>
+<text x="459.1666666666667" y="309" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#7d786c" text-anchor="middle">1 s</text>
+<line x1="598.75" y1="290" x2="598.75" y2="295" stroke="#c9cdbf" stroke-width="1"/>
+<text x="598.75" y="309" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#7d786c" text-anchor="middle">1.5 s</text>
+<line x1="738.3333333333334" y1="290" x2="738.3333333333334" y2="295" stroke="#c9cdbf" stroke-width="1"/>
+<text x="738.3333333333334" y="309" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#7d786c" text-anchor="middle">2 s</text>
+<text x="24" y="106" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#1f1b16" text-anchor="start">your program</text>
+<text x="24" y="123" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#5b574d" text-anchor="start">a permit every 100 ms</text>
+<rect x="178.5" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="206.4" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="234.3" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="262.2" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="290.2" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="318.1" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="346.0" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="373.9" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="401.8" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="429.8" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="457.7" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="485.6" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<rect x="513.5" y="95" width="3" height="26" rx="1" fill="#a4532f"/>
+<line x1="527.0" y1="108" x2="850.0" y2="108" stroke="#c9cdbf" stroke-width="1.5" stroke-dasharray="3 5"/>
+<text x="523.0" y="88" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" font-style="normal" fill="#a13d31" text-anchor="start">the program hangs, or the cable is pulled</text>
+<text x="523.0" y="130" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="italic" fill="#7d786c" text-anchor="start">no permit arrives</text>
+<path d="M515.0 152 v-6 M515.0 149 h139.58333333333337 M654.5833333333334 152 v-6" fill="none" stroke="#1f1b16" stroke-width="1.5"/>
+<text x="584.7916666666667" y="167" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" font-style="normal" fill="#1f1b16" text-anchor="middle">500 ms of silence</text>
+<text x="24" y="203" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#1f1b16" text-anchor="start">D8, ENABLE</text>
+<text x="24" y="220" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#5b574d" text-anchor="start">every driver, active low</text>
+<path d="M180.0 215 H654.5833333333334 V193 H850.0" fill="none" stroke="#1f1b16" stroke-width="2.5" stroke-linejoin="round"/>
+<text x="184.0" y="230" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#5b574d" text-anchor="start">LOW: the drivers are energized</text>
+<text x="662.5833333333334" y="187" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="600" font-style="normal" fill="#4f6639" text-anchor="start">HIGH: de-energized</text>
+<text x="662.5833333333334" y="210" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#4f6639" text-anchor="start">by the Uno itself:</text>
+<text x="662.5833333333334" y="224" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#4f6639" text-anchor="start">no host, no cable needed</text>
+<text x="24" y="267" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="13" font-weight="600" font-style="normal" fill="#1f1b16" text-anchor="start">the motor</text>
+<rect x="180.0" y="250" width="474.6" height="24" rx="4" fill="#a4532f"/>
+<text x="190.0" y="266" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="12" font-weight="600" font-style="normal" fill="#ffffff" text-anchor="start">moving</text>
+<text x="662.5833333333334" y="266" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11" font-weight="normal" font-style="normal" fill="#1f1b16" text-anchor="start">stopped, and stays stopped</text>
+<line x1="654.5833333333334" y1="78" x2="654.5833333333334" y2="276" stroke="#a13d31" stroke-width="1.5" stroke-dasharray="4 4"/>
+<text x="24" y="336" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#5b574d" text-anchor="start">Measured on the Uno (2026-09-13): silence for 500 ms stopped the motor, and a returning permit did not restart it. Any key sends PERMIT 0:</text>
+<text x="24" y="351" font-family="system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif" font-size="11.5" font-weight="normal" font-style="normal" fill="#5b574d" text-anchor="start">the Uno confirmed it had de-energized 90 ms later, USB round trip included (2026-09-28).</text>
+</svg>
